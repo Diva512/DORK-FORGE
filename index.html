@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>DORK FORGE v5 — Advanced OSINT Dork Generator</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="background-art" aria-hidden="true"></div>
+<div class="background-tint" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<div class="app-shell">
+  <header class="top-hud">
+    <div class="brand-lockup">
+      <div class="brand-mark" aria-hidden="true">
+        <span>☠</span>
+      </div>
+      <div>
+        <div class="title-row">
+          <h1 class="logo">DORK FORGE</h1>
+          <span class="version">v5</span>
+        </div>
+        <p class="sub">Advanced OSINT Dork Generator</p>
+      </div>
+    </div>
+
+    <div class="boot-feed" aria-label="System status">
+      <span>&gt; INITIALIZING MODULES...</span>
+      <span>&gt; LOADING ENGINES...</span>
+      <span>&gt; OSINT MODE: ACTIVE</span>
+      <span>&gt; STATUS: OPERATIONAL</span>
+    </div>
+
+    <div class="hud-map" aria-hidden="true">
+      <div class="map-lines"></div>
+      <div class="lock-ring">⌬</div>
+    </div>
+
+    <button class="theme-btn" id="themeToggle" title="Toggle theme" type="button">☀</button>
+  </header>
+
+  <main class="app">
+    <section class="left-column">
+      <section class="control-panel panel-frame">
+        <div class="toolbar control-row">
+          <div class="select-group">
+            <label for="engineSelect">Engine</label>
+            <select id="engineSelect">
+              <option value="google">Google</option>
+              <option value="bing">Bing</option>
+              <option value="duckduckgo">DuckDuckGo</option>
+              <option value="yandex">Yandex</option>
+              <option value="shodan">Shodan</option>
+              <option value="censys">Censys</option>
+            </select>
+          </div>
+          <div class="select-group">
+            <label for="modeSelect">Mode</label>
+            <select id="modeSelect">
+              <option value="precision">Precision</option>
+              <option value="deep_search">Deep Search</option>
+              <option value="document_hunt">Document Hunt</option>
+              <option value="domain_recon">Domain Recon</option>
+              <option value="code_intel">Code Intel</option>
+              <option value="mentions_intel">Mentions Intel</option>
+            </select>
+          </div>
+          <div class="select-group">
+            <label for="categorySelect">Category</label>
+            <select id="categorySelect">
+              <option value="auto">Auto</option>
+              <option value="documents">Documents</option>
+              <option value="public_directories">Public Directories</option>
+              <option value="domain_research">Domain Research</option>
+              <option value="company_research">Company Research</option>
+              <option value="code_research">Code Research</option>
+              <option value="news_mentions">News &amp; Mentions</option>
+              <option value="forums_discussions">Forums &amp; Discussions</option>
+              <option value="public_profiles">Public Profiles</option>
+              <option value="technical_docs">Technical Docs</option>
+              <option value="reports">Reports</option>
+            </select>
+          </div>
+          <button class="btn-rand" id="randomBtn" title="Random target and generate" type="button">▧ Random</button>
+          <button class="btn-help" id="helpBtn" title="Help & operator guide" type="button">? Help</button>
+        </div>
+
+        <label class="input-label" for="userInput">Enter Target</label>
+        <div class="target-wrap">
+          <textarea id="userInput" placeholder="e.g. example.com, ceh v13 notes, linux tutorial..." autocomplete="off"></textarea>
+          <div class="target-reticle" aria-hidden="true"></div>
+        </div>
+
+        <div class="actions action-buttons">
+          <button class="btn-primary" id="executeBtn" type="button">🚀 Generate &amp; Search</button>
+          <button class="btn-gen" id="generateBtn" type="button">▷ Generate</button>
+          <button class="btn-copy" id="copyPrimaryBtn" type="button">⧉ Copy Main</button>
+          <button class="btn-copy" id="copyAllBtn" type="button">▣ Copy All</button>
+          <button class="btn-export" id="exportTxtBtn" type="button">TXT Export</button>
+          <button class="btn-export" id="exportJsonBtn" type="button">JSON Export</button>
+          <button class="btn-clear" id="clearBtn" type="button">🗑 Clear</button>
+        </div>
+      </section>
+
+      <section class="dork-box panel-frame" id="dorkBox">
+        <div class="dork-box-top">
+          <span class="label">☆ Primary Dork</span>
+          <button id="openMainBtn" class="dork-open-btn" type="button">↗ Open in Search</button>
+        </div>
+        <code class="dork-text primary-query" id="dorkText">—</code>
+      </section>
+
+      <section class="variants-panel panel-frame">
+        <div class="vp-header">
+          <span class="vp-title panel-title">⌘ Dork Variants</span>
+          <span class="vp-badge" id="variantCountBadge">0</span>
+        </div>
+        <div class="loading" id="loadingEl">Generating dork variants...</div>
+        <div class="variants-list" id="variantList">
+          <div class="muted-small">No variants generated yet. Enter a target and click Generate.</div>
+        </div>
+      </section>
+    </section>
+
+    <aside class="right-column">
+      <section class="history-panel panel-frame">
+        <div class="hp-header">
+          <span class="hp-title panel-title">◷ History</span>
+          <button id="clearHistoryBtn" class="hp-clear-btn" type="button">Clear</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="muted-small">No history yet.</div>
+        </div>
+      </section>
+
+      <section class="analysis-panel panel-frame">
+        <span class="ap-label panel-title">⌁ Analysis</span>
+        <div class="ap-grid" id="analysisGrid">
+          <div class="ap-empty">Waiting for input.</div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="helpOverlay">
+  <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="modal-header">
+      <h2 id="guideTitle">DORK FORGE — Operator &amp; Usage Guide</h2>
+      <button class="modal-close" id="helpClose" type="button">&times;</button>
+    </div>
+    <div class="modal-body" id="operatorGuideBody">
+      <div class="muted-small">Loading guide...</div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
